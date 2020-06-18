@@ -6,6 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Essentials;
+using SQLite;
+using System.IO;
+
 
 namespace Who_I_Am
 {
@@ -14,45 +17,34 @@ namespace Who_I_Am
     [DesignTimeVisible(false)]
     public partial class MainPage : ContentPage
     {
-        ItemList list = new ItemList("Numbers" ,new List<string>() { "1", "2", "3", "4", "5", "6", "7", "8", "9" });
-        List<ItemList> lists = DataBaseHandler.GetAll();
+        ItemList list = new ItemList("Numbers" ,new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9" });
         public MainPage()
         {
             InitializeComponent();
 
 
 
-            DataBaseHandler.CreateTable();
+            
             OrientationSensor.Start(SensorSpeed.Game);
             OrientationSensor.ReadingChanged += Update;
 
 
-            listView.ItemsSource = lists;
+        }
 
-            DataTemplate dataTemplate = new DataTemplate(() =>
-            {
-                var grid = new Grid();
-
-                var nameLabel = new Label { FontAttributes = FontAttributes.Bold };
-                var ageLabel = new Label();
-
-                nameLabel.SetBinding(Label.TextProperty, "Name");
-                ageLabel.SetBinding(Label.TextProperty, "String");
-
-
-                grid.Children.Add(nameLabel);
-                grid.Children.Add(ageLabel, 1, 0);
-
-                return new ViewCell { View = grid };
-            });
-
-            listView.ItemTemplate = dataTemplate;
-
-
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            var backingFile = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            SQLiteConnection db = new SQLiteConnection(Path.Combine(backingFile, "Test1.db"));//, SQLiteOpenFlags.Create);
             
-
+            
+            db.CreateTable<ItemList>();
+       
+            db.Insert(list);
+            listView.ItemsSource = db.Table<ItemList>().ToArray();
 
         }
+
         private string getString(float Angle, float Sensetivity = 30f)
         {
 

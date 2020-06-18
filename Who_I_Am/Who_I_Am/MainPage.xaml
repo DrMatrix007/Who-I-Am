@@ -4,22 +4,23 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="Who_I_Am.MainPage">
-
+             x:Class="Who_I_Am.MainPage"> 
     <StackLayout>
-        <!-- Place new controls here -->
-        <Label x:Name="label" 
-            Text="Welcome to Xamarin.Forms!" 
-           HorizontalOptions="Center"
-           VerticalOptions="CenterAndExpand" />
-        <Label
-            HorizontalOptions="Center"
-            VerticalOptions="CenterAndExpand"
-        
-            x:Name="label2">
+        <Label x:Name="label">
+            
         </Label>
-
-        <ListView x:Name="listView"/>
+        <ListView x:Name="listView">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout>
+                            <Label Text="{Binding Name}"></Label>
+                            <Label Text="{Binding String}"></Label>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
 
 
     </StackLayout>

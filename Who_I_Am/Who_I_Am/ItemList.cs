@@ -2,20 +2,24 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using SQLitePCL;
+using Microsoft.Data.Sqlite;
+using SQLiteNetExtensions.Attributes;
 
 namespace Who_I_Am
 {
     class ItemList
     {
-        public List<string> list = new List<string> {"Nothing HERE"};
+        [TextBlob("Lists")]
+        public string[] list { get; set; } = new string[] { "Nothing HERE" };
         static int idCounter = 1;
 
-        public string Name;
+        public string Name { get; set; }
 
-        public string String;
+        public string String { get; set; }
 
         private int id;
-        [PrimaryKey, AutoIncrement]
+        [PrimaryKey, AutoIncrement,Column("Id")]
         public int Id { get => id; set => id = value; }
 
 
@@ -31,12 +35,12 @@ namespace Who_I_Am
         {
             get
             {
-                return list.Count;
+                return list.Length;
             }
         }
 
 
-        public ItemList(string name,List<string> list)
+        public ItemList(string name,string[] list)
         {
             Name = name;
             this.list = list;
